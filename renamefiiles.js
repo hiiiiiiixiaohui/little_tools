@@ -14,6 +14,7 @@ if (args.length === 0) {
 
 const prefix = args[0];
 const fileExtension = args[1];
+const type = args[2] || 0;
 const cwd = process.cwd();
 
 // 读取当前目录中的所有文件
@@ -50,7 +51,14 @@ fs.readdir(cwd, (err, files) => {
     if (!suffix) {
       suffix = path.extname(file)
     }
-    const newPath = `${prefix}${idx}${suffix}`
+
+  // 0-> change name， 1-> change suffix
+   let pathMap = {
+    0:`${prefix}${idx}${suffix}`,
+    1: `${idx}${prefix}`,
+   }
+
+    const newPath = pathMap[type];
 
     fs.rename(file, newPath, (err) => {
       if (err) {
